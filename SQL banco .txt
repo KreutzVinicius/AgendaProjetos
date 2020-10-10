@@ -1,0 +1,22 @@
+create table projeto 
+(
+	id serial,
+	nomeproj varchar(50),
+	datainicial date,
+	datafinal date,
+	completo varchar (5),
+	atrasado varchar(3),
+	primary key (id)
+);
+
+create table atividades(
+	id serial,
+	idproj int,
+	nomeatv varchar(50),
+	datainicialA date,
+	datafinalA date,
+	finalizada boolean,
+	descricao varchar(250),
+	primary key (id),
+	foreign key (idproj) references projeto	
+);
