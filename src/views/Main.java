@@ -57,11 +57,20 @@ public class Main {
 	JPanel alterarAtvPanel = new JPanel();
 	JPanel Panel = new JPanel();
 	
+	JScrollPane atvScrollPane = new JScrollPane(tblAtividades);
+	JScrollPane projScrollPane = new JScrollPane(tblProjetos);
+	
+	Button cadastrarProjeto = new Button("Cadastrar Projeto");
+	Button alterarProjeto = new Button("Alterar Projeto");
+	Button removerProjeto = new Button("Remover Projeto");
+	Button cadastrarAtv = new Button("Cadastrar Atividade");
+	Button alterarAtv = new Button("Alterar Atividade");
+	Button removerAtv = new Button("Remover Atividade");
+	
 	private JTextField nomeProjField;
 	private JTextField dataInicialField;
 	private JTextField dataFinalField;
 	private JTextField idField;
-	private JTextField idProjField;
 	private JTextField idAtvField;
 	private JTextField nomeAtvField;
 	private JTextField dataInicialAtvField;
@@ -95,448 +104,24 @@ public class Main {
 		SystemFrame.setBounds(100, 100, 1000, 800);
 		SystemFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		JPanel listarProjPanel = new JPanel();
-		listarProjPanel.setBackground(new Color(195, 195, 229));
-		listarProjPanel.setBounds(140, 70, 820, 481);
-		SystemFrame.getContentPane().add(listarProjPanel);
-		listarProjPanel.setLayout(null);
-		listarProjPanel.setBounds(546, 131, 428, 599);
 		
-		SystemFrame.getContentPane().add(listarProjPanel);
-		
-				tblProjetos.setBorder(new LineBorder(new Color(0, 0, 0)));
-				tblProjetos.setModel(new DefaultTableModel(
-					new Object[][] {
-					},
-					new String[] {
-						"ID","Nome", "Data Inicial", "Data Final","% Completa", "Atrasado"
-					}
-				));
-				tblProjetos.setBounds(64, 67, 546, 178);
-				
-				JScrollPane scrollPane = new JScrollPane(tblProjetos);
-				tblProjetos.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseClicked(MouseEvent e) {
-						
-	
-						
-						listarAtvPanel.setVisible(true);
-	
-						int linha = tblProjetos.getSelectedRow();
-						String aux = String.valueOf(tblProjetos.getValueAt(linha, 0));
-						 int idProj = Integer.valueOf(aux);
-
-						Button cadastrarAtv = new Button("Cadastrar Atividade");
-						cadastrarAtv.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-			
-								cadastrarAtvPanel.setBackground(new Color(195, 195, 229));
-								cadastrarAtvPanel.setBounds(16, 131, 520, 600);
-								SystemFrame.getContentPane().add(cadastrarAtvPanel);
-								cadastrarAtvPanel.setLayout(null);
-								
-								nomeAtvField = new JTextField();
-								nomeAtvField.setText("Nome da atividade");
-								nomeAtvField.setBounds(10, 46, 500, 30);
-								cadastrarAtvPanel.add(nomeAtvField);
-								nomeAtvField.setColumns(10);
-								nomeAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										nomeAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (nomeAtvField.getText().length()==0)
-											nomeAtvField.setText("Nome do atividade");
-									}
-								});
-								
-								dataInicialAtvField = new JTextField();
-								dataInicialAtvField.setText("Data Inicial");
-								dataInicialAtvField.setBounds(10, 90, 500, 30);
-								cadastrarAtvPanel.add(dataInicialAtvField);
-								dataInicialAtvField.setColumns(10);
-								dataInicialAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										dataInicialAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (dataInicialAtvField.getText().length()==0)
-											dataInicialAtvField.setText("Data Inicial");
-									}
-								});
-								
-								dataFinalAtvField = new JTextField();
-								dataFinalAtvField.setText("Data Final");
-								dataFinalAtvField.setBounds(10, 141, 500, 30);
-								cadastrarAtvPanel.add(dataFinalAtvField);
-								dataFinalAtvField.setColumns(10);
-								dataFinalAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										dataFinalAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (dataFinalAtvField.getText().length()==0)
-											dataFinalAtvField.setText("Data Final");
-									}
-								});
-								
-								DescriçãoField = new JTextField();
-								DescriçãoField.setText("Descrição");
-								DescriçãoField.setBounds(10, 192, 500, 30);
-								cadastrarAtvPanel.add(DescriçãoField);
-								DescriçãoField.setColumns(10);
-								DescriçãoField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										DescriçãoField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (DescriçãoField.getText().length()==0)
-											DescriçãoField.setText("Descrição");
-									}
-								});
-								
-								
-								JCheckBox finalizadaCheckBox = new JCheckBox("Finalizada");
-								finalizadaCheckBox.setBounds(10, 247, 97, 23);
-								cadastrarAtvPanel.add(finalizadaCheckBox);
-								finalizadaCheckBox.setVisible(true);
-								
-								
-								JButton finalizarCadAtv = new JButton("Finalizar Cadastro");
-								finalizarCadAtv.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										Atividade atividade = new Atividade();
-										String aux;
-										
-										atividade.setIdProj(idProj);
-										atividade.setNomeAtv(nomeAtvField.getText());
-										
-										SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
-										Date dataFormatada;
-										try {
-											aux = dataInicialAtvField.getText();
-											dataFormatada = dtf.parse(aux);
-											atividade.getDataInicialA().setTime(dataFormatada);
-											
-											aux = dataFinalAtvField.getText();
-											dataFormatada = dtf.parse(aux);
-											atividade.getDataFinalA().setTime(dataFormatada);							
-										} catch (ParseException e1) {
-											System.out.println("erro de formatação da data");
-											return;
-										}
-										
-										atividade.setDescricao(DescriçãoField.getText());
-										
-										if (finalizadaCheckBox.isSelected())
-										       atividade.setFinalizada(true);
-										   else 
-										        atividade.setFinalizada(false);
-
-										    
-														
-										sistema.cadastrarAtividade(atividade);
-										
-										JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso !");
-										cadastrarAtv.setVisible(false);
-										
-										 attTblAtv(idProj);
-										 attTblProj();
-										
-									}
-								});
-								finalizarCadAtv.setVisible(true);
-								finalizarCadAtv.setBounds(358, 247, 130, 23);
-								listarAtvPanel.add(finalizarCadAtv);
-							}
-						});
-						cadastrarAtv.setBounds(10, 10, 105, 30);
-						listarAtvPanel.add(cadastrarAtv);
-						
-						Button alterarAtv = new Button("Alterar Atividade");
-						alterarAtv.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								
-								cadastrarProj.setVisible(false);
-								cadastrarAtvPanel.setVisible(false);
-								removerProj.setVisible(false);
-								removerAtvPanel.setVisible(false);
-								alterarProj.setVisible(false);
-								
-								alterarAtvPanel.setVisible(true);
-								
-								alterarAtvPanel.setBackground(new Color(195, 195, 229));
-								alterarAtvPanel.setBounds(16, 131, 520, 600);
-								SystemFrame.getContentPane().add(alterarAtvPanel);
-								alterarAtvPanel.setLayout(null);
-								
-								nomeAtvField = new JTextField();
-								nomeAtvField.setText("Nome da atividade");
-								nomeAtvField.setBounds(10, 46, 500, 30);
-								alterarAtvPanel.add(nomeAtvField);
-								nomeAtvField.setColumns(10);
-								nomeAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										nomeAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (nomeAtvField.getText().length()==0)
-											nomeAtvField.setText("Nome da atividade");
-									}
-								});
-								
-								
-								dataInicialAtvField = new JTextField();
-								dataInicialAtvField.setText("Data Inicial");
-								dataInicialAtvField.setBounds(10, 87, 500, 30);
-								alterarAtvPanel.add(dataInicialAtvField);
-								dataInicialAtvField.setColumns(10);
-								dataInicialAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										dataInicialAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (dataInicialAtvField.getText().length()==0)
-											dataInicialAtvField.setText("Data Inicial");
-									}
-								});
-								
-								dataFinalAtvField = new JTextField();
-								dataFinalAtvField.setText("Data Final");
-								dataFinalAtvField.setBounds(10, 128, 500, 30);
-								alterarAtvPanel.add(dataFinalAtvField);
-								dataFinalAtvField.setColumns(10);
-								dataFinalAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										dataFinalAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (dataFinalAtvField.getText().length()==0)
-											dataFinalAtvField.setText("Data Final");
-									}
-								});
-								
-								DescriçãoField = new JTextField();
-								DescriçãoField.setText("Descrição");
-								DescriçãoField.setBounds(10, 169, 500, 30);
-								alterarAtvPanel.add(DescriçãoField);
-								DescriçãoField.setColumns(10);
-								DescriçãoField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										DescriçãoField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (DescriçãoField.getText().length()==0)
-											DescriçãoField.setText("Descrição");
-									}
-								});
-								
-								idProjField = new JTextField();
-								idProjField.setText("ID do projeto");
-								idProjField.setBounds(10, 210, 97, 30);
-								alterarAtvPanel.add(idProjField);
-								idProjField.setColumns(10);
-								idProjField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										idProjField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (idProjField.getText().length()==0)
-											idProjField.setText("ID do projeto");
-									}
-								});
-								
-								idAtvField = new JTextField();
-								idAtvField.setText("ID da atividade");
-								idAtvField.setBounds(117, 210, 97, 30);
-								alterarAtvPanel.add(idAtvField);
-								idAtvField.setColumns(10);
-								idProjField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										idProjField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (idProjField.getText().length()==0)
-											idProjField.setText("ID da atividade");
-									}
-								});
-								
-								JCheckBox finalizadaCheckBox = new JCheckBox("Finalizada");
-								finalizadaCheckBox.setBounds(10, 247, 97, 23);
-								alterarAtvPanel.add(finalizadaCheckBox);
-								finalizadaCheckBox.setVisible(true);
-								
-								JButton finalizarAltAtv = new JButton("Finalizar Alteração");
-								finalizarAltAtv.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										Atividade atividade = new Atividade();
-										String aux;
-										
-										atividade.setIdProj(idProj);
-										atividade.setNomeAtv(nomeAtvField.getText());
-										
-										SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
-										Date dataFormatada;
-										try {
-											aux = dataInicialAtvField.getText();
-											dataFormatada = dtf.parse(aux);
-											atividade.getDataInicialA().setTime(dataFormatada);
-											
-											aux = dataFinalAtvField.getText();
-											dataFormatada = dtf.parse(aux);
-											atividade.getDataFinalA().setTime(dataFormatada);							
-										} catch (ParseException e1) {
-											System.out.println("erro de formatação da data");
-											return;
-										}
-										
-										atividade.setDescricao(DescriçãoField.getText());
-										
-										if (finalizadaCheckBox.isSelected())
-										       atividade.setFinalizada(true);
-										   else 
-										        atividade.setFinalizada(false);
-
-										    
-														
-										sistema.alterarAtividade(atividade);
-										
-										JOptionPane.showMessageDialog(null, "Alteração efetuada com sucesso !");
-										alterarAtv.setVisible(false);
-										
-										 attTblAtv(idProj);
-										 attTblProj();
-									}
-								});
-								finalizarAltAtv.setVisible(true);
-								finalizarAltAtv.setBounds(358, 247, 130, 23);
-								listarAtvPanel.add(finalizarAltAtv);
-							}
-						});
-						alterarAtv.setBounds(121, 10, 105, 30);
-						listarAtvPanel.add(alterarAtv);
-						
-						Button removerAtv = new Button("Remover Atividade");
-						removerAtv.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								
-								cadastrarProj.setVisible(false);
-								cadastrarAtvPanel.setVisible(false);
-								removerProj.setVisible(false);
-								alterarProj.setVisible(false);
-								alterarAtvPanel.setVisible(false);
-								
-								removerAtvPanel.setVisible(true);
-								
-								removerAtvPanel.setBackground(new Color(195, 195, 229));
-								removerAtvPanel.setBounds(16, 131, 520, 600);
-								SystemFrame.getContentPane().add(removerAtvPanel);
-								removerAtvPanel.setLayout(null);	
-								
-								idAtvField = new JTextField();
-								idAtvField.setText("ID da atividade");
-								idAtvField.setBounds(10, 46, 105, 30);
-								removerAtvPanel.add(idAtvField);
-								idAtvField.setColumns(10);
-								idAtvField.addFocusListener(new FocusAdapter() {
-									@Override
-									public void focusGained(FocusEvent e) {
-										idAtvField.setText("");
-									}
-									@Override
-									public void focusLost(FocusEvent e) {
-										if (idAtvField.getText().length()==0)
-											idAtvField.setText("ID da atividade");
-									}
-								});
-								
-								JButton finalizarRemAtv = new JButton("Remover Atividade");
-								finalizarRemAtv.addMouseListener(new MouseAdapter() {
-									@Override
-									public void mouseClicked(MouseEvent e) {
-										String aux;
-										aux = idAtvField.getText();
-										 int id = Integer.valueOf(aux);
-										sistema.removerAtividade(id);
-										
-										JOptionPane.showMessageDialog(null, "Remoção efetuada com sucesso !");
-										removerAtvPanel.setVisible(false);
-										
-										 attTblAtv(idProj);
-										 attTblProj();
-									}
-								});
-								finalizarRemAtv.setBounds(358, 247, 130, 23);
-								listarAtvPanel.add(finalizarRemAtv);
-							}
-						});
-						removerAtv.setBounds(232, 10, 105, 30);
-						listarAtvPanel.add(removerAtv);
-						
-						SystemFrame.getContentPane().add(listarAtvPanel);		
-						
-								tblAtividades.setBorder(new LineBorder(new Color(0, 0, 0)));
-								tblAtividades.setModel(new DefaultTableModel(
-									new Object[][] {
-									},
-									new String[] {
-										"ID","Nome", "Data Inicial", "Data Final","Finalizada", "Descrição"
-									}
-								));
-								tblAtividades.setBounds(10, 50, 546, 178);
-								
-								JScrollPane scrollPane1 = new JScrollPane(tblAtividades);
-								scrollPane1.setBounds(0, 287, 520, 313);
-								listarAtvPanel.add(scrollPane1);
-								scrollPane1.setViewportView(tblAtividades);
-								
-								 attTblAtv(idProj);
-				
-					}
-				});
-				scrollPane.setBounds(0, 0, 428, 599);
-				listarProjPanel.add(scrollPane);
-				scrollPane.setViewportView(tblProjetos);	
-				
-				attTblProj();
-
-		Button cadastrarProjeto = new Button("Cadastrar Projeto");
+//botao cadastrar projeto
 		cadastrarProjeto.setForeground(new Color(0, 0, 0));
 		cadastrarProjeto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
+				
+				listarAtvPanel.setVisible(false);
 				cadastrarAtvPanel.setVisible(false);
 				removerProj.setVisible(false);
 				removerAtvPanel.setVisible(false);
 				alterarProj.setVisible(false);
 				alterarAtvPanel.setVisible(false);
+				
+				atvScrollPane.setVisible(false);
+				cadastrarAtv.setVisible(false);
+				alterarAtv.setVisible(false);
+				removerAtv.setVisible(false);
 				
 				cadastrarProj.setVisible(true);
 				
@@ -636,15 +221,21 @@ public class Main {
 		cadastrarProjeto.setBounds(597, 10, 115, 30);
 		SystemFrame.getContentPane().add(cadastrarProjeto);
 		
-		Button alterarProjeto = new Button("Alterar Projeto");
+// botao alterar projeto
 		alterarProjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				listarAtvPanel.setVisible(false);
 				cadastrarProj.setVisible(false);
 				cadastrarAtvPanel.setVisible(false);
 				removerProj.setVisible(false);
 				removerAtvPanel.setVisible(false);
 				alterarAtvPanel.setVisible(false);
+				
+				atvScrollPane.setVisible(false);
+				cadastrarAtv.setVisible(false);
+				alterarAtv.setVisible(false);
+				removerAtv.setVisible(false);
 				
 				alterarProj.setVisible(true);
 				
@@ -765,16 +356,22 @@ public class Main {
 		alterarProjeto.setBounds(718, 10, 115, 30);
 		SystemFrame.getContentPane().add(alterarProjeto);
 		
-		Button removerProjeto = new Button("Remover Projeto");
+//botao remover projeto
 		removerProjeto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				listarAtvPanel.setVisible(false);
 				cadastrarProj.setVisible(false);
 				cadastrarAtvPanel.setVisible(false);
 				removerAtvPanel.setVisible(false);
 				alterarProj.setVisible(false);
 				alterarAtvPanel.setVisible(false);
+				
+				atvScrollPane.setVisible(false);
+				cadastrarAtv.setVisible(false);
+				alterarAtv.setVisible(false);
+				removerAtv.setVisible(false);
 				
 				removerProj.setVisible(true);
 				
@@ -815,6 +412,7 @@ public class Main {
 						 attTblProj();
 					}
 				});
+
 				finalizarRemProj.setBounds(364, 552, 146, 38);
 				removerProj.add(finalizarRemProj);
 			}
@@ -828,6 +426,433 @@ public class Main {
 		seusProjetos.setBounds(553, 98, 159, 22);
 		SystemFrame.getContentPane().add(seusProjetos);
 		
+		listarProjPanel.setBackground(new Color(195, 195, 229));
+		SystemFrame.getContentPane().add(listarProjPanel);
+		listarProjPanel.setLayout(null);
+		listarProjPanel.setBounds(546, 131, 428, 599);
+		
+		listarAtvPanel.setBackground(new Color(195, 195, 229));
+		SystemFrame.getContentPane().add(listarAtvPanel);
+		listarAtvPanel.setLayout(null);
+		listarAtvPanel.setBounds(16, 131, 520, 600);
+		
+				tblProjetos.setBorder(new LineBorder(new Color(0, 0, 0)));
+				tblProjetos.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						"ID","Nome", "Data Inicial", "Data Final","% Completa", "Atrasado"
+					}
+				));
+				tblProjetos.setBounds(64, 67, 546, 178);
+				tblProjetos.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						
+						cadastrarAtvPanel.setVisible(false);
+						cadastrarProj.setVisible(false);
+						removerProj.setVisible(false);
+						removerAtvPanel.setVisible(false);
+						alterarProj.setVisible(false);
+						alterarAtvPanel.setVisible(false);
+						
+						atvScrollPane.setVisible(true);
+						cadastrarAtv.setVisible(true);
+						alterarAtv.setVisible(true);
+						removerAtv.setVisible(true);
+						
+						
+						listarAtvPanel.setVisible(true);
+	
+						int linha = tblProjetos.getSelectedRow();
+						String aux = String.valueOf(tblProjetos.getValueAt(linha, 0));
+						 int idProj = Integer.valueOf(aux);
+
+//botao cadastrar atividade
+						cadastrarAtv.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+			
+								cadastrarAtvPanel.setBackground(new Color(195, 195, 229));
+								cadastrarAtvPanel.setBounds(16, 131, 520, 600);
+								SystemFrame.getContentPane().add(cadastrarAtvPanel);
+								cadastrarAtvPanel.setLayout(null);
+								cadastrarAtvPanel.setVisible(true);
+								
+								nomeAtvField = new JTextField();
+								nomeAtvField.setText("Nome da atividade");
+								nomeAtvField.setBounds(10, 46, 500, 30);
+								cadastrarAtvPanel.add(nomeAtvField);
+								nomeAtvField.setColumns(10);
+								nomeAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										nomeAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (nomeAtvField.getText().length()==0)
+											nomeAtvField.setText("Nome do atividade");
+									}
+								});
+								
+								dataInicialAtvField = new JTextField();
+								dataInicialAtvField.setText("Data Inicial");
+								dataInicialAtvField.setBounds(10, 90, 500, 30);
+								cadastrarAtvPanel.add(dataInicialAtvField);
+								dataInicialAtvField.setColumns(10);
+								dataInicialAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										dataInicialAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (dataInicialAtvField.getText().length()==0)
+											dataInicialAtvField.setText("Data Inicial");
+									}
+								});
+								
+								dataFinalAtvField = new JTextField();
+								dataFinalAtvField.setText("Data Final");
+								dataFinalAtvField.setBounds(10, 141, 500, 30);
+								cadastrarAtvPanel.add(dataFinalAtvField);
+								dataFinalAtvField.setColumns(10);
+								dataFinalAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										dataFinalAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (dataFinalAtvField.getText().length()==0)
+											dataFinalAtvField.setText("Data Final");
+									}
+								});
+								
+								DescriçãoField = new JTextField();
+								DescriçãoField.setText("Descrição");
+								DescriçãoField.setBounds(10, 192, 500, 30);
+								cadastrarAtvPanel.add(DescriçãoField);
+								DescriçãoField.setColumns(10);
+								DescriçãoField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										DescriçãoField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (DescriçãoField.getText().length()==0)
+											DescriçãoField.setText("Descrição");
+									}
+								});
+								
+								
+								JCheckBox finalizadaCheckBox = new JCheckBox("Finalizada");
+								finalizadaCheckBox.setBounds(10, 247, 97, 23);
+								cadastrarAtvPanel.add(finalizadaCheckBox);
+								finalizadaCheckBox.setVisible(true);
+								
+								
+								JButton finalizarCadAtv = new JButton("Finalizar Cadastro");
+								finalizarCadAtv.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										Atividade atividade = new Atividade();
+										String aux;
+										
+										atividade.setIdProj(idProj);
+										atividade.setNomeAtv(nomeAtvField.getText());
+										
+										SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
+										Date dataFormatada;
+										try {
+											aux = dataInicialAtvField.getText();
+											dataFormatada = dtf.parse(aux);
+											atividade.getDataInicialA().setTime(dataFormatada);
+											
+											aux = dataFinalAtvField.getText();
+											dataFormatada = dtf.parse(aux);
+											atividade.getDataFinalA().setTime(dataFormatada);							
+										} catch (ParseException e1) {
+											System.out.println("erro de formatação da data");
+											return;
+										}
+										
+										atividade.setDescricao(DescriçãoField.getText());
+										
+										if (finalizadaCheckBox.isSelected())
+										       atividade.setFinalizada(true);
+										   else 
+										        atividade.setFinalizada(false);
+
+										    
+														
+										sistema.cadastrarAtividade(atividade);
+										cadastrarAtvPanel.setVisible(false);
+										JOptionPane.showMessageDialog(null, "Cadastro efetuado com sucesso !");
+										
+										 attTblAtv(idProj);
+										 attTblProj();
+										
+									}
+								});
+								finalizarCadAtv.setVisible(true);
+								finalizarCadAtv.setBounds(358, 247, 130, 23);
+								cadastrarAtvPanel.add(finalizarCadAtv);
+							}
+						});
+						cadastrarAtv.setBounds(10, 10, 105, 30);
+						listarAtvPanel.add(cadastrarAtv);
+						
+//botao alterar atividade
+						alterarAtv.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								
+								cadastrarProj.setVisible(false);
+								cadastrarAtvPanel.setVisible(false);
+								removerProj.setVisible(false);
+								removerAtvPanel.setVisible(false);
+								alterarProj.setVisible(false);
+								
+								alterarAtvPanel.setVisible(true);
+								
+								alterarAtvPanel.setBackground(new Color(195, 195, 229));
+								alterarAtvPanel.setBounds(16, 131, 520, 600);
+								SystemFrame.getContentPane().add(alterarAtvPanel);
+								alterarAtvPanel.setLayout(null);
+								
+								nomeAtvField = new JTextField();
+								nomeAtvField.setText("Nome da atividade");
+								nomeAtvField.setBounds(10, 46, 500, 30);
+								alterarAtvPanel.add(nomeAtvField);
+								nomeAtvField.setColumns(10);
+								nomeAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										nomeAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (nomeAtvField.getText().length()==0)
+											nomeAtvField.setText("Nome da atividade");
+									}
+								});
+								
+								
+								dataInicialAtvField = new JTextField();
+								dataInicialAtvField.setText("Data Inicial");
+								dataInicialAtvField.setBounds(10, 87, 500, 30);
+								alterarAtvPanel.add(dataInicialAtvField);
+								dataInicialAtvField.setColumns(10);
+								dataInicialAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										dataInicialAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (dataInicialAtvField.getText().length()==0)
+											dataInicialAtvField.setText("Data Inicial");
+									}
+								});
+								
+								dataFinalAtvField = new JTextField();
+								dataFinalAtvField.setText("Data Final");
+								dataFinalAtvField.setBounds(10, 128, 500, 30);
+								alterarAtvPanel.add(dataFinalAtvField);
+								dataFinalAtvField.setColumns(10);
+								dataFinalAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										dataFinalAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (dataFinalAtvField.getText().length()==0)
+											dataFinalAtvField.setText("Data Final");
+									}
+								});
+								
+								DescriçãoField = new JTextField();
+								DescriçãoField.setText("Descrição");
+								DescriçãoField.setBounds(10, 169, 500, 30);
+								alterarAtvPanel.add(DescriçãoField);
+								DescriçãoField.setColumns(10);
+								DescriçãoField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										DescriçãoField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (DescriçãoField.getText().length()==0)
+											DescriçãoField.setText("Descrição");
+									}
+								});
+								
+								idAtvField = new JTextField();
+								idAtvField.setText("ID da atividade");
+								idAtvField.setBounds(10, 210, 97, 30);
+								alterarAtvPanel.add(idAtvField);
+								idAtvField.setColumns(10);
+								idAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										idAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (idAtvField.getText().length()==0)
+											idAtvField.setText("ID da atividade");
+									}
+								});
+								
+								JCheckBox finalizadaCheckBox = new JCheckBox("Finalizada");
+								finalizadaCheckBox.setBounds(10, 247, 97, 23);
+								alterarAtvPanel.add(finalizadaCheckBox);
+								finalizadaCheckBox.setVisible(true);
+								
+								JButton finalizarAltAtv = new JButton("Finalizar Alteração");
+								finalizarAltAtv.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										Atividade atividade = new Atividade();
+										String aux;
+										
+										atividade.setIdProj(idProj);
+										
+										aux = idAtvField.getText();
+										 int id = Integer.valueOf(aux);
+										atividade.setId(id);
+										atividade.setNomeAtv(nomeAtvField.getText());
+										
+										SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
+										Date dataFormatada;
+										try {
+											aux = dataInicialAtvField.getText();
+											dataFormatada = dtf.parse(aux);
+											atividade.getDataInicialA().setTime(dataFormatada);
+											
+											aux = dataFinalAtvField.getText();
+											dataFormatada = dtf.parse(aux);
+											atividade.getDataFinalA().setTime(dataFormatada);							
+										} catch (ParseException e1) {
+											System.out.println("erro de formatação da data");
+											return;
+										}
+										
+										atividade.setDescricao(DescriçãoField.getText());
+										
+										if (finalizadaCheckBox.isSelected())
+										       atividade.setFinalizada(true);
+										   else 
+										        atividade.setFinalizada(false);
+
+										    
+														
+										sistema.alterarAtividade(atividade);
+										alterarAtvPanel.setVisible(false);
+										JOptionPane.showMessageDialog(null, "Alteração efetuada com sucesso !");
+										
+										 attTblAtv(idProj);
+										 attTblProj();
+									}
+								});
+								finalizarAltAtv.setVisible(true);
+								finalizarAltAtv.setBounds(358, 247, 130, 23);
+								alterarAtvPanel.add(finalizarAltAtv);
+							}
+						});
+						alterarAtv.setBounds(121, 10, 105, 30);
+						listarAtvPanel.add(alterarAtv);
+						
+//botao remover atividade
+						removerAtv.addMouseListener(new MouseAdapter() {
+							@Override
+							public void mouseClicked(MouseEvent e) {
+								
+								cadastrarProj.setVisible(false);
+								cadastrarAtvPanel.setVisible(false);
+								removerProj.setVisible(false);
+								alterarProj.setVisible(false);
+								alterarAtvPanel.setVisible(false);
+								
+								removerAtvPanel.setVisible(true);
+								
+								removerAtvPanel.setBackground(new Color(195, 195, 229));
+								removerAtvPanel.setBounds(16, 131, 520, 600);
+								SystemFrame.getContentPane().add(removerAtvPanel);
+								removerAtvPanel.setLayout(null);	
+								
+								idAtvField = new JTextField();
+								idAtvField.setText("ID da atividade");
+								idAtvField.setBounds(10, 46, 105, 30);
+								removerAtvPanel.add(idAtvField);
+								idAtvField.setColumns(10);
+								idAtvField.addFocusListener(new FocusAdapter() {
+									@Override
+									public void focusGained(FocusEvent e) {
+										idAtvField.setText("");
+									}
+									@Override
+									public void focusLost(FocusEvent e) {
+										if (idAtvField.getText().length()==0)
+											idAtvField.setText("ID da atividade");
+									}
+								});
+								
+								JButton finalizarRemAtv = new JButton("Remover Atividade");
+								finalizarRemAtv.addMouseListener(new MouseAdapter() {
+									@Override
+									public void mouseClicked(MouseEvent e) {
+										String aux;
+										aux = idAtvField.getText();
+										 int id = Integer.valueOf(aux);
+
+										sistema.removerAtividade(id);
+										removerAtvPanel.setVisible(false);
+										JOptionPane.showMessageDialog(null, "Remoção efetuada com sucesso !");
+										
+										 attTblAtv(idProj);
+										 attTblProj();
+									}
+								});
+								finalizarRemAtv.setBounds(358, 247, 130, 23);
+								removerAtvPanel.add(finalizarRemAtv);
+							}
+						});
+						removerAtv.setBounds(232, 10, 105, 30);
+						listarAtvPanel.add(removerAtv);
+						
+						SystemFrame.getContentPane().add(listarAtvPanel);		
+						
+								tblAtividades.setBorder(new LineBorder(new Color(0, 0, 0)));
+								tblAtividades.setModel(new DefaultTableModel(
+									new Object[][] {
+									},
+									new String[] {
+										"ID","Nome", "Data Inicial", "Data Final","Finalizada", "Descrição"
+									}
+								));
+								tblAtividades.setBounds(10, 50, 546, 178);
+								
+								
+								atvScrollPane.setBounds(0, 287, 520, 313);
+								listarAtvPanel.add(atvScrollPane);
+								atvScrollPane.setViewportView(tblAtividades);
+								
+								 attTblAtv(idProj);
+				
+					}
+				});
+				projScrollPane.setBounds(0, 0, 428, 599);
+				listarProjPanel.add(projScrollPane);
+				projScrollPane.setViewportView(tblProjetos);	
+				
+				attTblProj();
+
 		
 	}
 
@@ -837,6 +862,7 @@ public class Main {
 		String linha[] = new String[] {"", "", "", "","",""};
 		try {
 			DefaultTableModel dadosProj = (DefaultTableModel) tblProjetos.getModel();
+			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
 			
 			int pos = -1;
 			for(Projeto projeto : lista) {
@@ -844,8 +870,10 @@ public class Main {
 				dadosProj.addRow(linha);
 				dadosProj.setValueAt(projeto.getId(), pos, 0);
 				dadosProj.setValueAt(projeto.getNomeProj(), pos, 1);
-				dadosProj.setValueAt(projeto.getDataInicial(), pos, 2);
-				dadosProj.setValueAt(projeto.getDataFinal(), pos, 3);
+				String dataI = s.format(projeto.getDataInicial().getTime());
+				dadosProj.setValueAt(dataI, pos, 2);
+				String dataF = s.format(projeto.getDataFinal().getTime());
+				dadosProj.setValueAt(dataF, pos, 3);
 				dadosProj.setValueAt(projeto.getCompleto(), pos, 4);
 				dadosProj.setValueAt(projeto.getAtrasado(), pos, 5);
 
@@ -860,6 +888,7 @@ public class Main {
 		String linha[] = new String[] {"", "", "", "","",""};
 		try {
 			DefaultTableModel dadosAtv = (DefaultTableModel) tblAtividades.getModel();
+			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy");
 			
 			int pos = -1;
 			for(Atividade atividade : lista) {
@@ -867,8 +896,10 @@ public class Main {
 				dadosAtv.addRow(linha);
 				dadosAtv.setValueAt(atividade.getId(), pos, 0);
 				dadosAtv.setValueAt(atividade.getNomeAtv(), pos, 1);
-				dadosAtv.setValueAt(atividade.getDataInicialA(), pos, 2);
-				dadosAtv.setValueAt(atividade.getDataFinalA(), pos, 3);
+				String dataI = s.format(atividade.getDataInicialA().getTime());
+				dadosAtv.setValueAt(dataI, pos, 2);
+				String dataF = s.format(atividade.getDataFinalA().getTime());
+				dadosAtv.setValueAt(dataF, pos, 3);
 				dadosAtv.setValueAt(atividade.isFinalizada(), pos, 4);
 				dadosAtv.setValueAt(atividade.getDescricao(), pos, 5);
 

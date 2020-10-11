@@ -72,12 +72,13 @@ public class ProjetoDAO {
 	public Projeto select(int id) throws SelectException {
 		ResultSet rs;
 		Projeto proj = null;
+
 		
 		try {
 			sqlselect.setInt(1, id);
 			rs = sqlselect.executeQuery();
 			if(rs.next()) {
-				proj = new Projeto();
+				proj = new Projeto();   
 				proj.setId(rs.getInt("id"));
 				proj.setNomeProj(rs.getString("nomeproj"));
 				proj.getDataInicial().setTime((Date)rs.getObject("datainicial"));
@@ -120,7 +121,6 @@ public class ProjetoDAO {
 			sqlupdate.setInt(6, projeto.getId());
 			sqlupdate.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
 			 throw new UpdateException("erro de update na tabela projeto");
 		}
 
@@ -128,8 +128,8 @@ public class ProjetoDAO {
 	public String calculaPorcentagem (Projeto proj) {
 		ArrayList<Atividade> atividades = null;
 		AtividadeDAO atividadeDAO = new AtividadeDAO();
-		int contador = 0;
-		int contadorConcluidas=0;
+		float contador = 0;
+		float contadorConcluidas=0;
 		try {
 			atividades = atividadeDAO.selectAll();
 		} catch (SelectException e) {
@@ -143,6 +143,7 @@ public class ProjetoDAO {
 						contadorConcluidas++;
 			}
 		}
+		
 		if (contador != 0 )
 		return (contadorConcluidas/contador)*100 + "%";
 		
@@ -157,7 +158,8 @@ public class ProjetoDAO {
 		
 		atividades = atividadeDAO.selectAll();
 		for (Atividade ativ : atividades) {
-			if (ativ.getDataFinalA().after(proj.getDataFinal()) == true) {
+			System.out.println(ativ.getId() +""+ ativ.getIdProj());
+			if (ativ.getDataFinalA().after(proj.getDataFinal()) == true && (ativ.isFinalizada() == false && ativ.getIdProj() == proj.getId())) {
 				return "sim";
 			}
 		}

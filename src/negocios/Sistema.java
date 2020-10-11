@@ -38,12 +38,16 @@ public void cadastrarAtividade (Atividade atividade) {
 
 public void removerProjeto (int id) {
 	projetoDAO = ProjetoDAO.getInstance();
-		
+	ArrayList<Atividade> lista = new ArrayList<Atividade>();	
+	lista = buscarAtividades(id);
+	for (Atividade atv : lista)
+		removerAtividade(atv.getId());
 		try {
 			projetoDAO.delete(id);
 		}catch (DeleteException e) {
 			System.out.println(e.getMessage());
 		}
+		
 }
 
 public void removerAtividade (int id) {

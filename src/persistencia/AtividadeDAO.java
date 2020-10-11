@@ -29,7 +29,7 @@ public class AtividadeDAO {
 		try {
 			sqlinsert = conn.prepareStatement("insert into atividades (id, idproj, nomeatv, datainiciala, datafinala, finalizada, descricao) values (default,?,?,?,?,?,?) ");
 			sqldelete = conn.prepareStatement("delete from atividades where id = ?");
-			sqlupdate = conn.prepareStatement("update atividades set nomeatv = ?, datainiciala = ?, datafinala = ?, finalizada = ?, descricao = ?, where id = ?");
+			sqlupdate = conn.prepareStatement("update atividades set nomeatv = ?, datainiciala = ?, datafinala = ?, finalizada = ?, descricao = ? where id = ?");
 			sqlall = conn.prepareStatement("select id from atividades");
 			sqlselect = conn.prepareStatement("select * from atividades where id = ?");
 			} catch (SQLException e) {
@@ -114,17 +114,19 @@ public class AtividadeDAO {
 
 	public void update (Atividade atividade) throws UpdateException {
 		try {
-			sqlupdate.setString(2,atividade.getNomeAtv());
+			sqlupdate.setString(1,atividade.getNomeAtv());
 			java.util.Date dataI = atividade.getDataInicialA().getTime();
 			java.sql.Timestamp sqlDateI = new java.sql.Timestamp(dataI.getTime());
 			sqlupdate.setTimestamp(2, sqlDateI);
 			java.util.Date dataF = atividade.getDataFinalA().getTime();
 			java.sql.Timestamp sqlDateF = new java.sql.Timestamp(dataF.getTime());
 			sqlupdate.setTimestamp(3, sqlDateF);
-			sqlupdate.setBoolean(5,atividade.isFinalizada());
-			sqlupdate.setString(6,atividade.getDescricao());
+			sqlupdate.setBoolean(4,atividade.isFinalizada());
+			sqlupdate.setString(5,atividade.getDescricao());
+			sqlupdate.setInt(6, atividade.getId());
 			sqlupdate.executeUpdate();
 		} catch (Exception e) {
+			e.printStackTrace();
 			 throw new UpdateException("erro de update na tabela atividade");
 		}
 
