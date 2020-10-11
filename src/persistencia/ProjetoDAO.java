@@ -158,7 +158,6 @@ public class ProjetoDAO {
 		
 		atividades = atividadeDAO.selectAll();
 		for (Atividade ativ : atividades) {
-			System.out.println(ativ.getId() +""+ ativ.getIdProj());
 			if (ativ.getDataFinalA().after(proj.getDataFinal()) == true && (ativ.isFinalizada() == false && ativ.getIdProj() == proj.getId())) {
 				return "sim";
 			}

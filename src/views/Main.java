@@ -67,6 +67,9 @@ public class Main {
 	Button alterarAtv = new Button("Alterar Atividade");
 	Button removerAtv = new Button("Remover Atividade");
 	
+	JLabel activityLabel = new JLabel("");
+	JLabel seusProjetos = new JLabel("Seus Projetos");
+	
 	private JTextField nomeProjField;
 	private JTextField dataInicialField;
 	private JTextField dataFinalField;
@@ -110,6 +113,8 @@ public class Main {
 		cadastrarProjeto.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
+				activityLabel.setText("Cadastrando Projeto");
 				
 				listarAtvPanel.setVisible(false);
 				cadastrarAtvPanel.setVisible(false);
@@ -224,6 +229,8 @@ public class Main {
 // botao alterar projeto
 		alterarProjeto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				activityLabel.setText("Alterando Projeto");
 				
 				listarAtvPanel.setVisible(false);
 				cadastrarProj.setVisible(false);
@@ -361,6 +368,8 @@ public class Main {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				activityLabel.setText("Removendo Projeto");
+				
 				listarAtvPanel.setVisible(false);
 				cadastrarProj.setVisible(false);
 				cadastrarAtvPanel.setVisible(false);
@@ -419,12 +428,6 @@ public class Main {
 		});
 		removerProjeto.setBounds(839, 10, 115, 30);
 		SystemFrame.getContentPane().add(removerProjeto);
-				
-		JLabel seusProjetos = new JLabel("Seus Projetos");
-		seusProjetos.setForeground(new Color(68, 50, 102));
-		seusProjetos.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
-		seusProjetos.setBounds(553, 98, 159, 22);
-		SystemFrame.getContentPane().add(seusProjetos);
 		
 		listarProjPanel.setBackground(new Color(195, 195, 229));
 		SystemFrame.getContentPane().add(listarProjPanel);
@@ -445,9 +448,18 @@ public class Main {
 					}
 				));
 				tblProjetos.setBounds(64, 67, 546, 178);
+				tblProjetos.getColumnModel().getColumn(0).setPreferredWidth(10);
+				tblProjetos.getColumnModel().getColumn(1).setPreferredWidth(70);
+				tblProjetos.getColumnModel().getColumn(2).setPreferredWidth(60);
+				tblProjetos.getColumnModel().getColumn(3).setPreferredWidth(60);
+				tblProjetos.getColumnModel().getColumn(4).setPreferredWidth(60);
+				tblProjetos.getColumnModel().getColumn(5).setPreferredWidth(20);
+				
 				tblProjetos.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
+						
+						activityLabel.setText("Suas Atividades");
 						
 						cadastrarAtvPanel.setVisible(false);
 						cadastrarProj.setVisible(false);
@@ -473,6 +485,8 @@ public class Main {
 							@Override
 							public void mouseClicked(MouseEvent e) {
 			
+								activityLabel.setText("Cadastrando Atividade");
+								
 								cadastrarAtvPanel.setBackground(new Color(195, 195, 229));
 								cadastrarAtvPanel.setBounds(16, 131, 520, 600);
 								SystemFrame.getContentPane().add(cadastrarAtvPanel);
@@ -598,7 +612,7 @@ public class Main {
 									}
 								});
 								finalizarCadAtv.setVisible(true);
-								finalizarCadAtv.setBounds(358, 247, 130, 23);
+								finalizarCadAtv.setBounds(358, 247, 150, 30);
 								cadastrarAtvPanel.add(finalizarCadAtv);
 							}
 						});
@@ -609,6 +623,8 @@ public class Main {
 						alterarAtv.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
+								
+								activityLabel.setText("Alterando Atividade");
 								
 								cadastrarProj.setVisible(false);
 								cadastrarAtvPanel.setVisible(false);
@@ -761,7 +777,7 @@ public class Main {
 									}
 								});
 								finalizarAltAtv.setVisible(true);
-								finalizarAltAtv.setBounds(358, 247, 130, 23);
+								finalizarAltAtv.setBounds(358, 247, 150, 30);
 								alterarAtvPanel.add(finalizarAltAtv);
 							}
 						});
@@ -772,6 +788,8 @@ public class Main {
 						removerAtv.addMouseListener(new MouseAdapter() {
 							@Override
 							public void mouseClicked(MouseEvent e) {
+								
+								activityLabel.setText("Removendo Atividade");
 								
 								cadastrarProj.setVisible(false);
 								cadastrarAtvPanel.setVisible(false);
@@ -819,7 +837,7 @@ public class Main {
 										 attTblProj();
 									}
 								});
-								finalizarRemAtv.setBounds(358, 247, 130, 23);
+								finalizarRemAtv.setBounds(358, 247, 150, 30);
 								removerAtvPanel.add(finalizarRemAtv);
 							}
 						});
@@ -837,6 +855,12 @@ public class Main {
 									}
 								));
 								tblAtividades.setBounds(10, 50, 546, 178);
+								tblAtividades.getColumnModel().getColumn(0).setPreferredWidth(20);
+								tblAtividades.getColumnModel().getColumn(1).setPreferredWidth(70);
+								tblAtividades.getColumnModel().getColumn(2).setPreferredWidth(80);
+								tblAtividades.getColumnModel().getColumn(3).setPreferredWidth(80);
+								tblAtividades.getColumnModel().getColumn(4).setPreferredWidth(50);
+								tblAtividades.getColumnModel().getColumn(5).setPreferredWidth(250);
 								
 								
 								atvScrollPane.setBounds(0, 287, 520, 313);
@@ -849,11 +873,20 @@ public class Main {
 				});
 				projScrollPane.setBounds(0, 0, 428, 599);
 				listarProjPanel.add(projScrollPane);
-				projScrollPane.setViewportView(tblProjetos);	
-				
+				projScrollPane.setViewportView(tblProjetos);
 				attTblProj();
+				
+				activityLabel.setForeground(new Color(68, 50, 102));
+				activityLabel.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+				activityLabel.setBounds(16, 104, 292, 14);
+				SystemFrame.getContentPane().add(activityLabel);
+				
 
-		
+				seusProjetos.setForeground(new Color(68, 50, 102));
+				seusProjetos.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 20));
+				seusProjetos.setBounds(553, 98, 159, 22);
+				SystemFrame.getContentPane().add(seusProjetos);
+
 	}
 
 	
