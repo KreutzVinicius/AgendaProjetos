@@ -185,7 +185,7 @@ public class Main {
 						if (dataFinalField.getText().length()==0)
 							dataFinalField.setText("Data final do projeto (formato dd/mm/yyyy)");
 					}
-				});	
+				});
 				Button FinalizarCadProj = new Button("Finalizar Cadastro");
 				cadastrarProj.add(FinalizarCadProj);
 				FinalizarCadProj.addMouseListener(new MouseAdapter() {
